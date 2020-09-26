@@ -56,7 +56,7 @@ export class App
 			routerOptions = options.routerOptions;
 		}
 
-		routerOptions.collector = "../../../../dist/RouteExt";
+		routerOptions.collector = require.resolve("./RouteExt");
 
 		let collector = router(routerOptions);
 
