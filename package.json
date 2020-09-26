@@ -42,6 +42,8 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "mocha -r ts-node/register test/**/*Test.ts",
+    "coverage": "nyc -r text-summary -r lcov npm run test"
   }
 }
