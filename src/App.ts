@@ -282,7 +282,7 @@ export class App
 
 			const route = this.collector.getRoute(result[1]);
 
-			return route.handle(req,res, result[2]);
+			return route.handle(req,res);
 		} else {
 			//not found
 			return this.handle404(req,res);

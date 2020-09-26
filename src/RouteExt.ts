@@ -87,9 +87,11 @@ export class Route extends R
 		this.queueDone = true;
 	}
 
-	protected async call(req: ServerRequest, res: Response, param: Map<string, any>): Promise<void>
+	protected async call(req: ServerRequest, res: Response): Promise<void>
 	{
 		const callback = this.handler;
+
+		const param = req.param;
 
 		const returns = await callback(req,res, ... Array.from(param.values()));
 
@@ -98,13 +100,13 @@ export class Route extends R
 		}
 	}
 
-	public handle(req: ServerRequest, res: Response, param: Map<string, any>): Promise<any>
+	public handle(req: ServerRequest, res: Response): Promise<any>
 	{
 		if(!this.queueDone) {
 			this.createQueue();
 		}
 
-		return this.queue.handle(req,res,param);
+		return this.queue.handle(req,res);
 	}
 }
 

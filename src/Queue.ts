@@ -10,7 +10,7 @@
 import {Response} from "./Response";
 import {ServerRequest} from "./ServerRequest";
 
-export type LastHandler = (req: ServerRequest, res: Response, param?: Map<string, any>) => Promise<any> ;
+export type LastHandler = (req: ServerRequest, res: Response) => Promise<any> ;
 
 export type NextFunction = (err?) => Promise<any>;
 
@@ -26,12 +26,12 @@ export class Queue
 		private lastHandler: LastHandler
 	) {}
 
-	public async handle(req: ServerRequest, res: Response, param: Map<string, any> = new Map,i: number = 0): Promise<any>
+	public async handle(req: ServerRequest, res: Response,i: number = 0): Promise<any>
 	{
 		const mw: Middleware = this.queue[i];
 
 		if(!mw) {
-			return this.lastHandler(req,res,param);
+			return this.lastHandler(req,res);
 		}
 
 		return mw(req,res,(err) => {
@@ -39,7 +39,7 @@ export class Queue
 				return this.handleError(err,req,res);
 			}
 
-			return this.handle(req,res,param,i+1);
+			return this.handle(req,res,i+1);
 		});
 	}
 
