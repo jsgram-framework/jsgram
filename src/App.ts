@@ -43,8 +43,8 @@ export class App
 	private queueHandler: Queue;
 
 	//options
-	readonly urlTrimLastSlash: boolean = true;
-	readonly x_powered_by_header: boolean = true;
+	private readonly urlTrimLastSlash: boolean = true;
+	private readonly x_powered_by_header: boolean = true;
 
 	constructor(options: AppOptions = {})
 	{
