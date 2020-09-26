@@ -11,11 +11,15 @@ const body = new SimpleBody_1.SimpleBody();
  * simple CORS
  */
 app.add((req,res,next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
+
 	if(req.method === "OPTIONS") {
-		res.setHeader('Access-Control-Allow-Origin', '*');
-		res.setHeader('Access-Control-Allow-Credentials', 'true');
-		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
+		//Preflighted
+		res.setHeader('Content-Length', '0');
 		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+		res.send("");
 	}
 
 	return next();
