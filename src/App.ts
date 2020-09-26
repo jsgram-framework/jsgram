@@ -34,8 +34,6 @@ export type RouteHandler =
 
 export class App
 {
-	private server: Server;
-
 	private collector: RouteCollector;
 	private dispatcher: DispatcherInterface;
 
@@ -313,6 +311,8 @@ export class App
 
 	/**
 	 * Creates the dispatcher and the queue
+	 *
+	 * @returns {module:http.Server}
 	 */
 	public build()
 	{
@@ -321,6 +321,11 @@ export class App
 
 		//init queue
 		this.queueHandler = new Queue(this.queue,this.handleRoute.bind(this));
+
+		return http.createServer(
+			{ServerResponse: Response, IncomingMessage:ServerRequest},
+			this.handle.bind(this)
+		);
 	}
 
 	/**
@@ -329,18 +334,16 @@ export class App
 	 *
 	 * @param {number} port
 	 * @param {string} hostname
+	 * @returns {module:http.Server}
 	 */
 	public listen(port?: number, hostname?: string)
 	{
-		this.build();
+		const server = this.build();
 
-		this.server = http.createServer(
-			{ServerResponse: Response, IncomingMessage:ServerRequest},
-			this.handle.bind(this)
-		);
-
-		this.server.listen(port, hostname, () => {
+		server.listen(port, hostname, () => {
 			console.log(`Server running at http://${hostname}:${port}/`);
 		});
+
+		return server;
 	}
 }
