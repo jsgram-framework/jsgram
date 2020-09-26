@@ -1,3 +1,12 @@
+/**
+ * @package jsgram
+ *
+ * @link https://gitlab.com/grammm/jsgram/jsgram
+ * @licence https://gitlab.com/grammm/jsgram/jsgram/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import DispatcherInterface from "gram-route/dist/src/Interfaces/DispatcherInterface";
 import {dispatcher, HttpMethod, router, RouterOptions} from "gram-route";
 import RouteGroup from "gram-route/dist/src/RouteGroup";

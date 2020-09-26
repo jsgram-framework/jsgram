@@ -1,3 +1,12 @@
+/**
+ * @package jsgram
+ *
+ * @link https://gitlab.com/grammm/jsgram/jsgram
+ * @licence https://gitlab.com/grammm/jsgram/jsgram/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import {App, AppOptions} from "./App";
 
 let appObj: App;

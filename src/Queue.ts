@@ -1,3 +1,12 @@
+/**
+ * @package jsgram
+ *
+ * @link https://gitlab.com/grammm/jsgram/jsgram
+ * @licence https://gitlab.com/grammm/jsgram/jsgram/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import {Response} from "./Response";
 import {ServerRequest} from "./ServerRequest";
 
@@ -7,6 +16,9 @@ export type NextFunction = (err?) => Promise<any>;
 
 export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
 
+/**
+ * Handles the middleware queue
+ */
 export class Queue
 {
 	constructor(

@@ -1,3 +1,12 @@
+/**
+ * @package jsgram
+ *
+ * @link https://gitlab.com/grammm/jsgram/jsgram
+ * @licence https://gitlab.com/grammm/jsgram/jsgram/-/blob/master/LICENSE
+ *
+ * @author Jörn Heinemann <joernheinemann@gxm.de>
+ */
+
 import RC from "gram-route/dist/src/Collector/RouteCollector";
 import R from "gram-route/dist/src/Route";
 import {HttpMethod} from "gram-route";
