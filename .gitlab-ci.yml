@@ -1,0 +1,19 @@
+test:
+  image: node:latest
+
+  before_script:
+    - apt-get update -yqq
+    - npm install
+
+  script:
+    - npm run coverage
+
+  except:
+    - trigger
+  artifacts:
+    when: always
+    paths:
+      # save coverage results
+      - coverage
+      - .nyc_output
+    expire_in: 10 days
