@@ -71,6 +71,12 @@ export class Queue
 			err(req, res);
 		}
 
+		if(err instanceof Error) {
+			res.statusCode = 500;
+			res.end();
+			throw err;
+		}
+
 		res.statusCode = 500;
 		res.end("500");
 	}

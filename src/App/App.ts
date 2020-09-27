@@ -239,11 +239,7 @@ export class App
 			res.setHeader('x-powered-by','jsgram');
 		}
 
-		try {
-			await this.queueHandler.handle(req,res);
-		} catch (e) {
-			await Queue.handleError(e,req,res);
-		}
+		await this.queueHandler.handle(req,res);
 	}
 
 	/**
