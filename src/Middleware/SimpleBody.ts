@@ -12,11 +12,14 @@ import {Response} from "../Response";
 import {NextFunction} from "../Queue";
 import {Readable} from "stream";
 
-export type BodyParserOptions = {
+export type BodyReaderOptions = {
 	limit?: number | string;
 	encoding?: BufferEncoding;
 };
 
+/**
+ * Reads the body from the request
+ */
 export class SimpleBody
 {
 	//std = 1 mb
@@ -24,7 +27,7 @@ export class SimpleBody
 
 	private readonly encoding: BufferEncoding = 'utf8';
 
-	constructor(options: BodyParserOptions = {})
+	constructor(options: BodyReaderOptions = {})
 	{
 		if(options.limit) {
 			this.limit = options.limit;
@@ -35,6 +38,15 @@ export class SimpleBody
 		}
 	}
 
+	/**
+	 * The middleware function
+	 *
+	 * placed the raw body into the request object
+	 *
+	 * @param {ServerRequest} req
+	 * @param {Response} res
+	 * @param {NextFunction} next
+	 */
 	public process(req: ServerRequest, res: Response, next: NextFunction)
 	{
 		this.read(req)
@@ -48,7 +60,13 @@ export class SimpleBody
 			})
 	}
 
-	public read(req: ServerRequest)
+	/**
+	 * Warps the reading process into a promise
+	 *
+	 * @param {ServerRequest} req
+	 * @returns {Promise}
+	 */
+	public read(req: ServerRequest): Promise<any>
 	{
 		req.setEncoding(this.encoding);
 
@@ -63,6 +81,12 @@ export class SimpleBody
 		});
 	}
 
+	/**
+	 * Reads the request body chunks and combined it to a string
+	 *
+	 * @param {module:stream.internal.Readable} stream
+	 * @param {(err: string, body: string) => void} cb
+	 */
 	public readStream(stream: Readable, cb: (err: string, body: string) => void)
 	{
 		let body: string = "";
