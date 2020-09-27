@@ -51,7 +51,7 @@ export class SimpleBody
 				next();
 			})
 			.catch((err) => {
-				next(err);
+				next(err,413);
 			})
 	}
 

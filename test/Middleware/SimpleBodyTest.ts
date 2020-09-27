@@ -112,7 +112,8 @@ describe("SimpleBodyTest",() => {
 		});
 
 		const cb = (req: ServerRequest ,res: GramResponse) => {
-			sb.process(req,res,async (err) => {
+			sb.process(req,res,async (err,status) => {
+				res.statusCode = status;
 				res.send(err);
 			});
 		};
@@ -128,7 +129,7 @@ describe("SimpleBodyTest",() => {
 			})
 			.end((err, res: Response) => {
 				assert.equal(err,null);
-				assert.equal(res.status,200);
+				assert.equal(res.status,413);
 				assert.equal(res.text,'request entity too large');
 
 				done();
