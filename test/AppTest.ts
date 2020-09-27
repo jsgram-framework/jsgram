@@ -106,7 +106,7 @@ describe("AppTest",() => {
 			});
 	});
 
-	it('should do a post request inkl body', function (done) {
+	it('should do a post request incl body', function (done) {
 		const app = new App();
 
 		createRealSampleApp(app);
