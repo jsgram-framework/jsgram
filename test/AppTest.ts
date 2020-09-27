@@ -1,3 +1,6 @@
+// @ts-ignore
+import {MockRouteGroup} from "./MockRouteGroup";
+
 let chai = require('chai');
 import {assert} from "chai";
 import jsgram from "../src";
@@ -7,6 +10,10 @@ import {Response} from "superagent";
 chai.use(chaiHttp);
 
 describe("AppTest",() => {
+	afterEach( () => {
+		MockRouteGroup.overrideMw();
+	});
+
 	it('should match a get Route', function (done) {
 		const app = jsgram();
 
