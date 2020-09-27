@@ -7,26 +7,40 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import {Response} from "./Response";
-import {ServerRequest} from "./ServerRequest";
-
-export type LastHandler = (req: ServerRequest, res: Response) => Promise<any> ;
-
-export type NextFunction = (err?) => Promise<any>;
-
-export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
+import {Response} from "../Util/Response";
+import {ServerRequest} from "../Util/ServerRequest";
+import {LastHandler, Middleware} from "../index";
 
 /**
  * Handles the middleware queue
  */
 export class Queue
 {
+	/**
+	 * Gets all middleware as array
+	 *
+	 * and a lastHandler which will be invoked
+	 * when all middleware are done
+	 *
+	 * @param {Middleware[]} queue
+	 * @param {LastHandler} lastHandler
+	 */
 	constructor(
 		private queue: Middleware[],
 		private lastHandler: LastHandler
 	) {}
 
-	public async handle(req: ServerRequest, res: Response,i: number = 0): Promise<any>
+	/**
+	 * Dispatch all middleware until it's done
+	 *
+	 * then invoke the last handler
+	 *
+	 * @param {ServerRequest} req
+	 * @param {Response} res
+	 * @param {number} i
+	 * @returns {Promise<any>}
+	 */
+	public async handle(req: ServerRequest, res: Response, i: number = 0): Promise<any>
 	{
 		const mw: Middleware = this.queue[i];
 

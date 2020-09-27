@@ -1,8 +1,7 @@
 import {SimpleBody} from "../../src/Middleware/SimpleBody";
-import {ServerRequest} from "../../src/ServerRequest";
-import {Response} from "../../src/Response";
-import {NextFunction} from "../../src/Queue";
-import jsgram from "../../src";
+import {ServerRequest} from "../../src/Util/ServerRequest";
+import {Response} from "../../src/Util/Response";
+import jsgram, {NextFunction} from "../../src";
 
 const app = jsgram();
 

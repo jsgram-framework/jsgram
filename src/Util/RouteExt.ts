@@ -12,7 +12,8 @@ import R from "gram-route/dist/src/Route";
 import {HttpMethod} from "gram-route";
 import {ServerRequest} from "./ServerRequest";
 import {Response} from "./Response";
-import {Queue,Middleware} from "./Queue";
+import {Queue} from "../App/Queue";
+import {Middleware} from "../index";
 
 /**
  * Extends the gram-route Collector

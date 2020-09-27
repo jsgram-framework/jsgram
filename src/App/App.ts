@@ -10,27 +10,14 @@
 import DispatcherInterface from "gram-route/dist/src/Interfaces/DispatcherInterface";
 import {dispatcher, HttpMethod, router, RouterOptions} from "gram-route";
 import RouteGroup from "gram-route/dist/src/RouteGroup";
-import {ServerRequest} from "./ServerRequest";
-import {Response} from "./Response";
+import {ServerRequest} from "../Util/ServerRequest";
+import {Response} from "../Util/Response";
 import * as http from "http";
 import {Server} from "http";
-import {Middleware, Queue} from "./Queue";
-import {Route, default as RouteCollector} from "./RouteExt";
+import {Queue} from "./Queue";
+import {Route, default as RouteCollector} from "../Util/RouteExt";
 import * as parseurl from "parseurl";
-
-export type AppOptions = {
-	/**
-	 * Options to config the router and dispatcher
-	 */
-	routerOptions?: RouterOptions;
-	urlTrimLastSlash?: boolean;
-	x_powered_by_header?: boolean;
-}
-
-export type RouteHandler =
-	((req: ServerRequest, res: Response) => (Promise<any> | void)) |
-	((req: ServerRequest, res: Response, ... args: any[]) => (Promise<any> | void));
-
+import {AppOptions, Middleware, RouteHandler} from "../index";
 
 export class App
 {
@@ -54,7 +41,7 @@ export class App
 			routerOptions = options.routerOptions;
 		}
 
-		routerOptions.collector = require.resolve("./RouteExt");
+		routerOptions.collector = require.resolve("../Util/RouteExt");
 
 		let collector = router(routerOptions);
 

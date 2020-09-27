@@ -7,15 +7,10 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import {ServerRequest} from "../ServerRequest";
-import {Response} from "../Response";
-import {NextFunction} from "../Queue";
+import {ServerRequest} from "../Util/ServerRequest";
+import {Response} from "../Util/Response";
 import {Readable} from "stream";
-
-export type BodyReaderOptions = {
-	limit?: number | string;
-	encoding?: BufferEncoding;
-};
+import {BodyReaderOptions, NextFunction} from "../index";
 
 /**
  * Reads the body from the request
