@@ -50,14 +50,14 @@ export class Queue
 
 		return mw(req,res,(err) => {
 			if(err) {
-				return this.handleError(err,req,res);
+				return Queue.handleError(err,req,res);
 			}
 
 			return this.handle(req,res,i+1);
 		});
 	}
 
-	private async handleError(err,req,res): Promise<any>
+	public static async handleError(err,req,res): Promise<any>
 	{
 		if(res.writableEnded) {
 			return;

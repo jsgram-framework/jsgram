@@ -239,7 +239,11 @@ export class App
 			res.setHeader('x-powered-by','jsgram');
 		}
 
-		await this.queueHandler.handle(req,res);
+		try {
+			await this.queueHandler.handle(req,res);
+		} catch (e) {
+			await Queue.handleError(e,req,res);
+		}
 	}
 
 	/**
@@ -254,6 +258,7 @@ export class App
 		let url = req.urlParts.pathname;
 
 		if(this.urlTrimLastSlash && url !== "/" && url.endsWith("/")) {
+			//remove the last / from the url
 			url = url.slice(0, -1);
 		}
 
