@@ -14,7 +14,7 @@ import {RouterOptions} from "gram-route";
 
 export type LastHandler = (req: ServerRequest, res: Response) => Promise<any> ;
 
-export type NextFunction = (err?) => Promise<any>;
+export type NextFunction = (err?, status?: number) => Promise<any>;
 
 export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
 

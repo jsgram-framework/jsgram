@@ -48,16 +48,16 @@ export class Queue
 			return this.lastHandler(req,res);
 		}
 
-		return mw(req,res,(err) => {
+		return mw(req,res,(err?, status?: number) => {
 			if(err) {
-				return Queue.handleError(err,req,res);
+				return Queue.handleError(req,res,err,status);
 			}
 
 			return this.handle(req,res,i+1);
 		});
 	}
 
-	public static async handleError(err,req,res): Promise<any>
+	public static async handleError(req: ServerRequest,res: Response,err, status: number = 500): Promise<any>
 	{
 		if(res.writableEnded) {
 			return;
@@ -71,13 +71,11 @@ export class Queue
 			err(req, res);
 		}
 
+		res.statusCode = status;
+		res.end(" " + status);
+
 		if(err instanceof Error) {
-			res.statusCode = 500;
-			res.end();
 			throw err;
 		}
-
-		res.statusCode = 500;
-		res.end("500");
 	}
 }
