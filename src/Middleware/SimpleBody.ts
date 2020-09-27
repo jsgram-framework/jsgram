@@ -71,7 +71,7 @@ export class SimpleBody
 		req.setEncoding(this.encoding);
 
 		return new Promise((resolve, reject) => {
-			this.readStream(req,(err,body) => {
+			this.readStream(req,(err: string, body: string) => {
 				if(err) {
 					return reject(err);
 				}
