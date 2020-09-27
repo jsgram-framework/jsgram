@@ -1,5 +1,5 @@
 // @ts-ignore
-import {MockRouteGroup} from "./MockRouteGroup";
+import {MockRouteGroup} from "./helper/MockRouteGroup";
 
 let chai = require('chai');
 
