@@ -20,13 +20,27 @@ export type Middleware = (req: ServerRequest, res: Response, next: NextFunction)
 
 export {Response};
 export {ServerRequest};
+export {SimpleBody} from "./Middleware/SimpleBody";
 
 export type AppOptions = {
 	/**
 	 * Options to config the router and dispatcher
+	 * default = {
+	 * 	dispatcher: TreeDispatcher
+	 * 	generator: TreeGenerator
+	 * 	collector: RouteCollector from RouteExt
+	 * }
 	 */
 	routerOptions?: RouterOptions;
+	/**
+	 * cut of the last / from the request url
+	 * default = true
+	 */
 	urlTrimLastSlash?: boolean;
+	/**
+	 * show the powered by header
+	 * default = true
+	 */
 	x_powered_by_header?: boolean;
 }
 
@@ -41,6 +55,14 @@ export type BodyReaderOptions = {
 
 let appObj: App;
 
+/**
+ * Singleton for the App class
+ *
+ * returns always the same instance of App class
+ *
+ * @param {AppOptions} options
+ * @returns {App}
+ */
 export default function jsgram(options: AppOptions = {}): App
 {
 	if(!appObj) {
