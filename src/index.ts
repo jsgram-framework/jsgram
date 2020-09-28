@@ -18,8 +18,8 @@ export type NextFunction = (err?, status?: number) => Promise<any>;
 
 export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
 
-export * from "./Util/Response";
-export * from "./Util/ServerRequest";
+export {Response};
+export {ServerRequest};
 
 export type AppOptions = {
 	/**
