@@ -18,6 +18,9 @@ export type NextFunction = (err?, status?: number) => Promise<any>;
 
 export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
 
+export * from "./Util/Response";
+export * from "./Util/ServerRequest";
+
 export type AppOptions = {
 	/**
 	 * Options to config the router and dispatcher
