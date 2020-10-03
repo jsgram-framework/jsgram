@@ -7,8 +7,8 @@ import {assert} from "chai";
 import jsgram, {NextFunction} from "../src";
 import chaiHttp = require("chai-http");
 import {App} from "../src/App/App";
-import {SimpleBody} from "../src/Middleware/SimpleBody";
-import {ServerRequest} from "../src/Util/ServerRequest";
+import {SimpleBody} from "../src";
+import {ServerRequest} from "../src";
 import {Response as GramResponse} from "../src/Util/Response";
 import {Response} from "superagent";
 
@@ -212,4 +212,6 @@ describe("AppTest",() => {
 				done();
 			});
 	});
+
+	//todo test long running
 });

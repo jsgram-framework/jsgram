@@ -1,5 +1,5 @@
 import * as http from "http";
-import {ServerRequest} from "../../src/Util/ServerRequest";
+import {ServerRequest} from "../../src";
 import {Response as GramResponse, Response} from "../../src/Util/Response";
 
 export function simpleServer(cb: (req: ServerRequest ,res: GramResponse) => void | Promise<void>, port?: string | number) {

@@ -3,9 +3,9 @@ import chaiHttp = require("chai-http");
 import {Response} from "superagent";
 // @ts-ignore
 import {simpleServer} from "../helper/SimpleServer";
-import {SimpleBody} from "../../src/Middleware/SimpleBody";
+import {SimpleBody} from "../../src";
 import {Response as GramResponse} from "../../src/Util/Response";
-import {ServerRequest} from "../../src/Util/ServerRequest";
+import {ServerRequest} from "../../src";
 
 let chai = require('chai');
 

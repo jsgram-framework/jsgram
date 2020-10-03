@@ -7,8 +7,8 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import {ServerRequest} from "../Util/ServerRequest";
-import {Response} from "../Util/Response";
+import {ServerRequest} from "..";
+import {Response} from "..";
 import {Readable} from "stream";
 import {BodyReaderOptions, NextFunction} from "../index";
 

@@ -10,8 +10,8 @@
 import DispatcherInterface from "gram-route/dist/src/Interfaces/DispatcherInterface";
 import {dispatcher, HttpMethod, router, RouterOptions} from "gram-route";
 import RouteGroup from "gram-route/dist/src/RouteGroup";
-import {ServerRequest} from "../Util/ServerRequest";
-import {Response} from "../Util/Response";
+import {ServerRequest} from "..";
+import {Response} from "..";
 import * as http from "http";
 import {Server} from "http";
 import {Queue} from "./Queue";
