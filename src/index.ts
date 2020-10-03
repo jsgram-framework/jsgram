@@ -11,12 +11,17 @@ import {App} from "./App/App";
 import {ServerRequest} from "./Util/ServerRequest";
 import {Response} from "./Util/Response";
 import {RouterOptions} from "gram-route";
+import {IncomingMessage, ServerResponse} from "http";
 
-export type LastHandler = (req: ServerRequest, res: Response) => Promise<any> ;
+export type LastHandler = (req: ServerRequest | IncomingMessage, res: Response | ServerResponse) => Promise<any> ;
 
-export type NextFunction = (err?, status?: number) => Promise<any>;
+export type QueueError = ((req: ServerRequest | IncomingMessage, res: Response | ServerResponse) => void) |
+	string |
+	object;
 
-export type Middleware = (req: ServerRequest, res: Response, next: NextFunction) => Promise<any> | void;
+export type NextFunction = (err?: QueueError, status?: number) => Promise<any>;
+
+export type Middleware = (req: ServerRequest | IncomingMessage, res: Response | ServerResponse, next: NextFunction) => Promise<any> | void;
 
 export {Response};
 export {ServerRequest};
