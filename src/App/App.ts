@@ -37,7 +37,7 @@ export class App
 	{
 		let routerOptions: RouterOptions = {};
 
-		if(options.routerOptions) {
+		if(options.routerOptions !== null && options.routerOptions !== undefined) {
 			routerOptions = options.routerOptions;
 		}
 
@@ -50,11 +50,11 @@ export class App
 			this.collector = collector;
 		}
 
-		if(options.urlTrimLastSlash) {
+		if(options.urlTrimLastSlash !== null && options.urlTrimLastSlash !== undefined) {
 			this.urlTrimLastSlash = options.urlTrimLastSlash;
 		}
 
-		if(options.x_powered_by_header) {
+		if(options.x_powered_by_header !== null && options.x_powered_by_header !== undefined) {
 			this.x_powered_by_header = options.x_powered_by_header;
 		}
 	}
