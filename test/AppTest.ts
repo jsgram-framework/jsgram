@@ -50,6 +50,10 @@ export function createRealSampleApp(app: App)
 		res.send("method: " + req.method);
 	});
 
+	app.head("/noBody",(req: ServerRequest,res: GramResponse) => {
+		res.end();
+	});
+
 	app.group("/v1",() => {
 		app.group("/user",() => {
 			//route with simple body
@@ -72,6 +76,10 @@ export function createRealSampleApp(app: App)
 				app.patch("",(req: ServerRequest,res: GramResponse,id) => {
 					res.send("user changed: " + id + " with this new name: " + req.body.name);
 				}).add(parseMw);
+
+				app.delete("",(req: ServerRequest,res: GramResponse,id) => {
+					res.send("user deleted: " + id);
+				});
 			});
 		});
 	});
