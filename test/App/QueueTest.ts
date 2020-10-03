@@ -1,15 +1,16 @@
-import {Middleware, NextFunction} from "../src";
+import {Middleware, NextFunction} from "../../src";
 
 let chai = require('chai');
 
 import {assert} from "chai";
 import chaiHttp = require("chai-http");
-import {ServerRequest} from "../src";
-import {Response as GramResponse} from "../src/Util/Response";
+import {ServerRequest} from "../../src";
+import {Response as GramResponse} from "../../src/Util/Response";
 import {Response} from "superagent";
 // @ts-ignore
-import {simpleServer} from "./helper/SimpleServer";
-import {Queue} from "../src/App/Queue";
+import {simpleServer} from "../helper/SimpleServer";
+import {Queue} from "../../src/App/Queue";
+
 
 chai.use(chaiHttp);
 

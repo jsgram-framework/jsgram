@@ -1,16 +1,17 @@
 // @ts-ignore
-import {MockRouteGroup} from "./helper/MockRouteGroup";
+import {MockRouteGroup} from "../helper/MockRouteGroup";
 
 let chai = require('chai');
 
 import {assert} from "chai";
-import jsgram, {NextFunction} from "../src";
+import jsgram, {NextFunction} from "../../src/index";
 import chaiHttp = require("chai-http");
-import {App} from "../src/App/App";
-import {SimpleBody} from "../src";
-import {ServerRequest} from "../src";
-import {Response as GramResponse} from "../src/Util/Response";
+
+import {SimpleBody} from "../../src";
+import {ServerRequest} from "../../src";
+import {Response as GramResponse} from "../../src/Util/Response";
 import {Response} from "superagent";
+import {App} from "../../src/App/App";
 
 chai.use(chaiHttp);
 
