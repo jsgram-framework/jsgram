@@ -7,8 +7,8 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import {Response} from "../Util/Response";
-import {ServerRequest} from "../Util/ServerRequest";
+import {Response} from "..";
+import {ServerRequest} from "..";
 import {LastHandler, Middleware} from "../index";
 
 /**
@@ -57,25 +57,32 @@ export class Queue
 		});
 	}
 
-	public static async handleError(req: ServerRequest,res: Response,err, status: number = 500): Promise<any>
+	public static async handleError(req: ServerRequest,res: Response,err, status: number = 500): Promise<void>
 	{
 		if(res.writableEnded) {
 			return;
 		}
 
-		if(typeof err === 'string') {
-			res.write(err);
-		}
+		res.statusCode = status;
 
 		if(typeof err === 'function') {
 			err(req, res);
+
+			if(!res.writableEnded) {
+				res.end();
+			}
+
+			return;
 		}
 
-		res.statusCode = status;
-		res.end(" " + status);
-
 		if(err instanceof Error) {
+			res.end(" " + status);
 			throw err;
+		}
+
+		if(typeof err === 'string' || typeof err === 'object') {
+			res.send(err);
+			return;
 		}
 	}
 }
