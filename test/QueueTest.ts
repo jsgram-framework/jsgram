@@ -47,6 +47,30 @@ function createQueue(extraMw: Middleware[] = [], queueKey: string = "queue")
 }
 
 describe("QueueTest",() => {
+	it('should work without middleware', function (done) {
+		const last = async (req: ServerRequest ,res: GramResponse) => {
+			res.send("worked");
+		};
+
+		const queue = new Queue([],last);
+
+		const cb = async (req: ServerRequest ,res: GramResponse) => {
+			await queue.handle(req,res);
+		};
+
+		const server = simpleServer(cb);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"worked");
+
+				done();
+			});
+	});
+
 	it('should invoke simple middleware', function (done) {
 		const queue = createQueue();
 
@@ -67,7 +91,7 @@ describe("QueueTest",() => {
 			});
 	});
 
-	it('should react to errors from middleware', function (done) {
+	it('should react to errors from middleware with string', function (done) {
 		//string error
 		const queue = createQueue([
 			(req: ServerRequest ,res: GramResponse, next: NextFunction) => {
@@ -86,6 +110,113 @@ describe("QueueTest",() => {
 			.end((err, res: Response) => {
 				assert.equal(err,null);
 				assert.equal(res.status,500);
+				assert.equal(res.text,"Error test");
+
+				done();
+			});
+	});
+
+	it('should react to errors from middleware as callback and ending response', function (done) {
+		const errorCallback = (req: ServerRequest ,res: GramResponse) => {
+			res.send("Error test");
+		};
+
+		//cb error
+		const queue = createQueue([
+			(req: ServerRequest ,res: GramResponse, next: NextFunction) => {
+				next(errorCallback);
+			}
+		]);
+
+		const cb = async (req: ServerRequest ,res: GramResponse) => {
+			await queue.handle(req,res);
+		};
+
+		const server = simpleServer(cb);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,500);
+				assert.equal(res.text,"Error test");
+
+				done();
+			});
+	});
+
+	it('should react to errors from middleware as callback without ending response', function (done) {
+		const errorCallback = (req: ServerRequest ,res: GramResponse) => {
+			res.write("Error test");
+		};
+
+		//cb error
+		const queue = createQueue([
+			(req: ServerRequest ,res: GramResponse, next: NextFunction) => {
+				next(errorCallback);
+			}
+		]);
+
+		const cb = async (req: ServerRequest ,res: GramResponse) => {
+			await queue.handle(req,res);
+		};
+
+		const server = simpleServer(cb);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,500);
+				assert.equal(res.text,"Error test");
+
+				done();
+			});
+	});
+
+	it('should react to errors from middleware when the res is already closed', function (done) {
+		const queue = createQueue([
+			(req: ServerRequest ,res: GramResponse, next: NextFunction) => {
+				res.send("Res closed");
+				next("Error test");
+			}
+		]);
+
+		const cb = async (req: ServerRequest ,res: GramResponse) => {
+			await queue.handle(req,res);
+		};
+
+		const server = simpleServer(cb);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"Res closed");
+
+				done();
+			});
+	});
+
+	it('should react to errors from middleware with another status', function (done) {
+		const queue = createQueue([
+			(req: ServerRequest ,res: GramResponse, next: NextFunction) => {
+				next("Error test",413);
+			}
+		]);
+
+		const cb = async (req: ServerRequest ,res: GramResponse) => {
+			await queue.handle(req,res);
+		};
+
+		const server = simpleServer(cb);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,413);
 				assert.equal(res.text,"Error test");
 
 				done();

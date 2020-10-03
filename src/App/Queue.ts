@@ -7,7 +7,7 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import {Response} from "..";
+import {QueueError, Response} from "..";
 import {ServerRequest} from "..";
 import {LastHandler, Middleware} from "../index";
 
@@ -57,7 +57,7 @@ export class Queue
 		});
 	}
 
-	public static async handleError(req: ServerRequest,res: Response,err, status: number = 500): Promise<void>
+	public static async handleError(req: ServerRequest,res: Response, err: QueueError, status: number = 500): Promise<void>
 	{
 		if(res.writableEnded) {
 			return;
@@ -73,11 +73,6 @@ export class Queue
 			}
 
 			return;
-		}
-
-		if(err instanceof Error) {
-			res.end(" " + status);
-			throw err;
 		}
 
 		if(typeof err === 'string' || typeof err === 'object') {
