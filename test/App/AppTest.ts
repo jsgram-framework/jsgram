@@ -55,6 +55,14 @@ export function createRealSampleApp(app: App)
 		res.end();
 	});
 
+	app.options("/",(req: ServerRequest,res: GramResponse) => {
+		res.end();
+	});
+
+	app.any("/any",(req: ServerRequest,res: GramResponse) => {
+		res.end();
+	});
+
 	app.group("/v1",() => {
 		app.group("/user",() => {
 			//route with simple body
