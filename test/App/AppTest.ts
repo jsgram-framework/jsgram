@@ -11,7 +11,7 @@ import {SimpleBody} from "../../src";
 import {ServerRequest} from "../../src";
 import {Response as GramResponse} from "../../src/Util/Response";
 import {Response} from "superagent";
-import {App} from "../../src/App/App";
+import {App} from "../../src";
 
 chai.use(chaiHttp);
 

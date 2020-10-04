@@ -5,6 +5,7 @@ let chai = require('chai');
 import chaiHttp = require("chai-http");
 import {Response} from "superagent";
 import {Response as GramResponse} from "../../src/Util/Response";
+// @ts-ignore
 import {simpleServer} from "../helper/SimpleServer";
 import {ServerRequest} from "../../src";
 
