@@ -114,6 +114,7 @@ describe("AppTest",() => {
 			.end((err, res: Response) => {
 				assert.equal(err,null);
 				assert.equal(res.status,200);
+				assert.equal(res.header['x-powered-by'],"jsgram");
 				assert.equal(res.text,"hello world");
 
 				done();
@@ -128,6 +129,26 @@ describe("AppTest",() => {
 		});
 
 		const server = app.listen(3000);
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"hello world");
+
+				done();
+			});
+	});
+
+	it('should get content from a route handler', function (done) {
+		const app = new App();
+
+		app.get("/",async (req,res)=>{
+			return "hello world"
+		});
+
+		const server = app.build();
 
 		chai.request(server)
 			.get('/')
@@ -230,5 +251,215 @@ describe("AppTest",() => {
 			});
 	});
 
-	//todo test long running
+	//middleware test
+
+	it('should use global middleware', function (done) {
+		const app = new App();
+
+		app.add((req: ServerRequest, res: GramResponse,next: NextFunction) => {
+			req.setAttribute("mwtest","mwtest");
+
+			next();
+		});
+
+		app.get("/",(req: ServerRequest, res: GramResponse)=>{
+			res.send(req.getAttribute("mwtest"));
+		});
+
+		app.group("/mwgrouptest",() => {
+			app.get("",(req: ServerRequest, res: GramResponse)=>{
+				res.send(req.getAttribute("mwtest"));
+			});
+		});
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"mwtest");
+
+				chai.request(server)
+					.get('/')
+					.end((err, res: Response) => {
+						assert.equal(err,null);
+						assert.equal(res.status,200);
+						assert.equal(res.text,"mwtest");
+
+						done();
+					});
+			});
+	});
+
+	it('should use global middleware from an array', function (done) {
+		const app = new App();
+
+		app.add([
+			(req: ServerRequest, res: GramResponse,next: NextFunction) => {
+				req.setAttribute("mwtest","mwtest");
+
+				next();
+			},
+			(req: ServerRequest, res: GramResponse,next: NextFunction) => {
+				req.setAttribute("mwtest1","mwtest1");
+
+				next();
+			}
+		]);
+
+		app.get("/",(req: ServerRequest, res: GramResponse)=>{
+			res.send(req.getAttribute("mwtest") + req.getAttribute("mwtest1"));
+		});
+
+		app.group("/mwgrouptest",() => {
+			app.get("",(req: ServerRequest, res: GramResponse)=>{
+				res.send(req.getAttribute("mwtest") + req.getAttribute("mwtest1"));
+			});
+		});
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"mwtestmwtest1");
+
+				chai.request(server)
+					.get('/')
+					.end((err, res: Response) => {
+						assert.equal(err,null);
+						assert.equal(res.status,200);
+						assert.equal(res.text,"mwtestmwtest1");
+
+						done();
+					});
+			});
+	});
+
+	it('should use route and route group middleware', function (done) {
+		const app = new App();
+
+		const mw = (req: ServerRequest, res: GramResponse,next: NextFunction) => {
+			req.setAttribute("route","routemwtest");
+
+			next();
+		};
+
+		const groupMw = (req: ServerRequest, res: GramResponse,next: NextFunction) => {
+			req.setAttribute("group","groupmwtest");
+
+			next();
+		};
+
+		app.get("/",(req: ServerRequest, res: GramResponse)=>{
+			res.send(req.getAttribute("route"));
+		}).add(mw);
+
+		app.group("/mwgrouptest",() => {
+			app.get("",(req: ServerRequest, res: GramResponse)=>{
+				const text = req.getAttribute("group") + req.getAttribute("route");
+
+				res.send(text);
+			}).add(mw);
+		}).add(groupMw);
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"routemwtest");
+
+				chai.request(server)
+					.get('/mwgrouptest')
+					.end((err, res: Response) => {
+						assert.equal(err,null);
+						assert.equal(res.status,200);
+						assert.equal(res.text,"groupmwtestroutemwtest");
+
+						done();
+					});
+			});
+	});
+
+	//option test
+
+	it('should not show x-powered-by header when it is disabled', function (done) {
+		const app = new App({
+			x_powered_by_header: false
+		});
+
+		app.get("/",(req,res)=>{
+			res.send("hello world");
+		});
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"hello world");
+				assert.isUndefined(res.header['x-powered-by']);
+
+				done();
+			});
+	});
+
+	it('should trim the last slash when it is disabled', function (done) {
+		const app = new App({
+			urlTrimLastSlash: false
+		});
+
+		app.get("/test",(req,res)=>{
+			res.send("hello world");
+		});
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/test/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,404);	//404 because the route doesn't expected a / at the end
+
+				done();
+			});
+	});
+
+	//this test must always be the last test because the router isn't resetting after each test
+	it('should use other router options', function (done) {
+		const genPath = require.resolve("gram-route/dist/src/Generator/RegexBased/GroupPosBased");
+		const disPath = require.resolve("gram-route/dist/src/Dispatcher/RegexBased/GroupPosBased");
+
+		const app = new App({
+			routerOptions: {
+				generator: genPath,
+				dispatcher: disPath
+			}
+		});
+
+		app.get("/",(req,res)=>{
+			res.send("hello world");
+		});
+
+		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.text,"hello world");
+
+				done();
+			});
+	});
 });
