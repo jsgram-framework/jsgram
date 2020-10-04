@@ -17,7 +17,7 @@ import {Server} from "http";
 import {Queue} from "./Queue";
 import {Route, default as RouteCollector} from "../Util/RouteExt";
 import * as parseurl from "parseurl";
-import {AppOptions, Middleware, RouteHandler} from "../index";
+import {AppOptions, Middleware, RouteHandler} from "..";
 
 export class App
 {

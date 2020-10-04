@@ -48,7 +48,7 @@ export class Queue
 			return this.lastHandler(req,res);
 		}
 
-		return mw(req,res,(err?, status?: number) => {
+		return mw(req,res,(err?: QueueError, status?: number) => {
 			if(err) {
 				return Queue.handleError(req,res,err,status);
 			}
@@ -57,7 +57,7 @@ export class Queue
 		});
 	}
 
-	public static async handleError(req: ServerRequest,res: Response, err: QueueError, status: number = 500): Promise<void>
+	public static async handleError(req: ServerRequest, res: Response, err: QueueError, status: number = 500): Promise<void>
 	{
 		if(res.writableEnded) {
 			return;
