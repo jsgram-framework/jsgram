@@ -23,6 +23,7 @@ export type NextFunction = (err?: QueueError, status?: number) => Promise<any>;
 
 export type Middleware = (req: ServerRequest | IncomingMessage, res: Response | ServerResponse, next: NextFunction) => Promise<any> | void;
 
+export {App};
 export {Response};
 export {ServerRequest};
 export {SimpleBody} from "./Middleware/SimpleBody";
