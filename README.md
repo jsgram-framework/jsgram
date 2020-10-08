@@ -109,7 +109,7 @@ app.listen(port, hostname);
 
 - a middleware is a function which is invoked before the route handler (e.g. a controller or a function).
 
-- middleware arte organized as a queue: First in First out, Last in Last out.
+- middleware are organized as a queue: First in First out, Last in Last out.
 
 - all middleware get a request, response and a next function as parameters. To call the next middleware in the queue: `next()`
 
