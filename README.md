@@ -164,6 +164,30 @@ app.get("/hidden_routes",(req,res) => {
 })
 ````  
 
+## Https
+
+````typescript
+import {readFileSync} from "fs";
+const jsgram = require("jsgram");
+
+const options = {
+	key: readFileSync('key.pem'),
+	cert: readFileSync('cert.pem')
+};
+
+const app = jsgram.default();
+
+//Get Route
+app.get("/",(req,res) => {
+	res.send("Hello World");
+});
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+app.listen(port, hostname, true, options);
+````  
+
 ## Async support
 
 - route handlers and middleware are supporting async and await operations

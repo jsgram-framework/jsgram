@@ -2,16 +2,16 @@
 import {MockRouteGroup} from "../helper/MockRouteGroup";
 
 let chai = require('chai');
-
+const path = require('path');
 import {assert} from "chai";
 import jsgram, {NextFunction} from "../../src/index";
 import chaiHttp = require("chai-http");
-
 import {SimpleBody} from "../../src";
 import {ServerRequest} from "../../src";
 import {Response as GramResponse} from "../../src/Util/Response";
 import {Response} from "superagent";
 import {App} from "../../src";
+import {readFileSync} from "fs";
 
 chai.use(chaiHttp);
 
@@ -108,6 +108,34 @@ describe("AppTest",() => {
 		});
 
 		const server = app.build();
+
+		chai.request(server)
+			.get('/')
+			.end((err, res: Response) => {
+				assert.equal(err,null);
+				assert.equal(res.status,200);
+				assert.equal(res.header['x-powered-by'],"jsgram");
+				assert.equal(res.text,"hello world");
+
+				done();
+			});
+	});
+
+	it('should match a get Route from singleton with https server', function (done) {
+		const app = jsgram();
+
+		app.get("/",(req,res)=>{
+			res.send("hello world");
+		});
+
+		const options = {
+			key: readFileSync(path.join(__dirname, 'key.pem')),
+			cert: readFileSync(path.join(__dirname, 'cert.pem'))
+		};
+
+		const server = app.listen(3000,"localhost",true,options);
+
+		process.env.NODE_TLS_REJECT_UNAUTHORIZED="0";
 
 		chai.request(server)
 			.get('/')

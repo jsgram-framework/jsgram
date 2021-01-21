@@ -13,6 +13,7 @@ import RouteGroup from "gram-route/dist/src/RouteGroup";
 import {ServerRequest} from "..";
 import {Response} from "..";
 import * as http from "http";
+import * as https from "https";
 import {Server} from "http";
 import {Queue} from "./Queue";
 import {Route, default as RouteCollector} from "../Util/RouteExt";
@@ -302,7 +303,7 @@ export class App
 	 *
 	 * @returns {module:http.Server}
 	 */
-	public build()
+	public build(doHttps: boolean = false, options: http.ServerOptions | https.ServerOptions = {})
 	{
 		//init the dispatcher
 		this.dispatcher = dispatcher();
@@ -310,10 +311,14 @@ export class App
 		//init queue
 		this.queueHandler = new Queue(this.queue,this.handleRoute.bind(this));
 
-		return http.createServer(
-			{ServerResponse: Response, IncomingMessage:ServerRequest},
-			this.handle.bind(this)
-		);
+		options.IncomingMessage = ServerRequest;
+		options.ServerResponse = Response;
+
+		if(doHttps) {
+			return https.createServer(options,this.handle.bind(this));
+		}
+
+		return http.createServer(options, this.handle.bind(this));
 	}
 
 	/**
@@ -322,14 +327,22 @@ export class App
 	 *
 	 * @param {number} port
 	 * @param {string} hostname
+	 * @param {boolean} doHttps
+	 * @param {http.ServerOptions | https.ServerOptions} options
 	 * @returns {module:http.Server}
 	 */
-	public listen(port?: number, hostname?: string)
+	public listen(port?: number, hostname?: string, doHttps?: boolean, options?: http.ServerOptions | https.ServerOptions)
 	{
-		const server = this.build();
+		const server = this.build(doHttps,options);
 
 		server.listen(port, hostname, () => {
-			console.log(`Server running at http://${hostname}:${port}/`);
+			let preFix = "http";
+
+			if(doHttps) {
+				preFix = "https"
+			}
+
+			console.log(`Server running at ${preFix}://${hostname}:${port}/`);
 		});
 
 		return server;

@@ -1,6 +1,6 @@
 {
   "name": "jsgram",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A fast and lightweight framework for node with middleware",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
   "license": "MIT",
