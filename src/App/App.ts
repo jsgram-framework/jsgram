@@ -303,7 +303,7 @@ export class App
 	 *
 	 * @returns {module:http.Server}
 	 */
-	public build(doHttps: boolean = false, options: http.ServerOptions | https.ServerOptions = {})
+	public build(enableHttps: boolean = false, options: http.ServerOptions | https.ServerOptions = {}): https.Server | http.Server
 	{
 		//init the dispatcher
 		this.dispatcher = dispatcher();
@@ -314,7 +314,7 @@ export class App
 		options.IncomingMessage = ServerRequest;
 		options.ServerResponse = Response;
 
-		if(doHttps) {
+		if(enableHttps) {
 			return https.createServer(options,this.handle.bind(this));
 		}
 
@@ -327,22 +327,22 @@ export class App
 	 *
 	 * @param {number} port
 	 * @param {string} hostname
-	 * @param {boolean} doHttps
+	 * @param {boolean} enableHttps
 	 * @param {http.ServerOptions | https.ServerOptions} options
 	 * @returns {module:http.Server}
 	 */
-	public listen(port?: number, hostname?: string, doHttps?: boolean, options?: http.ServerOptions | https.ServerOptions)
+	public listen(port?: number, hostname?: string, enableHttps?: boolean, options?: http.ServerOptions | https.ServerOptions): https.Server | http.Server
 	{
-		const server = this.build(doHttps,options);
+		const server = this.build(enableHttps,options);
 
 		server.listen(port, hostname, () => {
-			let preFix = "http";
+			let prefix = "http";
 
-			if(doHttps) {
-				preFix = "https"
+			if(enableHttps) {
+				prefix = "https"
 			}
 
-			console.log(`Server running at ${preFix}://${hostname}:${port}/`);
+			console.log(`Server running at ${prefix}://${hostname}:${port}/`);
 		});
 
 		return server;

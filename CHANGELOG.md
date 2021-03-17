@@ -1,6 +1,7 @@
 # CHANGELOG
 
-# 1.0.0
+# 0.2.1
 
-- since 2020/
-- Framework init
+- since 2021/03/17
+- added tsconfig for test folder
+- changed return types of App.build and App.listen
