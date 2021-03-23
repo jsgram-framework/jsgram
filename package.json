@@ -1,6 +1,6 @@
 {
   "name": "jsgram",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A fast and lightweight framework for node with middleware",
   "author": "Jörn Heinemann <joernheinemann@gmx.de>",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "middleware"
   ],
   "dependencies": {
-    "gram-route": "^1.1.0",
+    "gram-route": "^1.2.2",
     "parseurl": "^1.3.3"
   },
   "devDependencies": {
