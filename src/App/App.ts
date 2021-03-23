@@ -7,9 +7,9 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import DispatcherInterface from "gram-route/dist/src/Interfaces/DispatcherInterface";
+import DispatcherInterface from "gram-route/dist/Interfaces/DispatcherInterface";
 import {dispatcher, HttpMethod, router, RouterOptions} from "gram-route";
-import RouteGroup from "gram-route/dist/src/RouteGroup";
+import RouteGroup from "gram-route/dist/RouteGroup";
 import {ServerRequest} from "..";
 import {Response} from "..";
 import * as http from "http";

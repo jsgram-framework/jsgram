@@ -7,8 +7,8 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import RC from "gram-route/dist/src/Collector/RouteCollector";
-import R from "gram-route/dist/src/Route";
+import RC from "gram-route/dist/Collector/RouteCollector";
+import R from "gram-route/dist/Route";
 import {HttpMethod} from "gram-route";
 import {ServerRequest} from "./ServerRequest";
 import {Response} from "./Response";
@@ -94,7 +94,7 @@ export class Route extends R
 
 		const param = req.param;
 
-		const returns = await callback(req,res, ... Array.from(param.values()));
+		const returns = await callback(req,res, ...Object.values(param));
 
 		if(returns && !res.writableEnded) {
 			res.send(returns);

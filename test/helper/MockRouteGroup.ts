@@ -1,4 +1,4 @@
-import RouteGroup from "gram-route/dist/src/RouteGroup";
+import RouteGroup from "gram-route/dist/RouteGroup";
 
 
 export class MockRouteGroup extends RouteGroup

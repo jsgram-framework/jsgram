@@ -14,7 +14,7 @@ export class ServerRequest extends IncomingMessage
 {
 	private attributes: Map<string, any> = new Map();
 
-	public param: Map<string,any> = new Map;
+	public param: {} = {};
 
 	public urlParts: Url;
 
