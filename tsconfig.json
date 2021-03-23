@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es2018",
-		"sourceMap": false,
+		"sourceMap": true,
 		"skipLibCheck": true,
 		"lib": ["es5", "es6","es2018"],
 		"outDir": "./dist",
