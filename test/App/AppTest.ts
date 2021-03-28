@@ -4,13 +4,9 @@ import {MockRouteGroup} from "../helper/MockRouteGroup";
 let chai = require('chai');
 const path = require('path');
 import {assert} from "chai";
-import jsgram, {NextFunction} from "../../src/index";
 import chaiHttp = require("chai-http");
-import {SimpleBody} from "../../src";
-import {ServerRequest} from "../../src";
-import {Response as GramResponse} from "../../src/Util/Response";
 import {Response} from "superagent";
-import {App} from "../../src";
+import jsgram, {App,NextFunction,Response as GramResponse,ServerRequest,SimpleBody} from "../../src";
 import {readFileSync} from "fs";
 
 chai.use(chaiHttp);
@@ -95,6 +91,10 @@ export function createRealSampleApp(app: App)
 }
 
 describe("AppTest",() => {
+	before(() => {
+		process.env.NODE_ENV = "test";
+	});
+
 	afterEach( () => {
 		//reset route groups (static array) after each test
 		MockRouteGroup.overrideMw();
@@ -172,7 +172,7 @@ describe("AppTest",() => {
 	it('should get content from a route handler', function (done) {
 		const app = new App();
 
-		app.get("/",async (req,res)=>{
+		app.get("/",async ()=>{
 			return "hello world"
 		});
 

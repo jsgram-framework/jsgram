@@ -7,8 +7,7 @@
  * @author Jörn Heinemann <joernheinemann@gxm.de>
  */
 
-import RC from "gram-route/dist/Collector/RouteCollector";
-import R from "gram-route/dist/Route";
+import {RouteCollector as RC, Route as R} from "gram-route";
 import {HttpMethod} from "gram-route";
 import {ServerRequest} from "./ServerRequest";
 import {Response} from "./Response";
@@ -66,10 +65,7 @@ class RouteCollector extends RC
  */
 export class Route extends R
 {
-	private queueDone: boolean = false;
-
 	private queue: Queue;
-
 
 	public add(middleware: Middleware)
 	{
@@ -77,15 +73,10 @@ export class Route extends R
 		return super.add(middleware);
 	}
 
-	protected createQueue()
+	public build()
 	{
-		//erstelle compose queue
-		const mw: Middleware[] = this.getMiddleware();
-
-		this.queue = new Queue(mw,this.call.bind(this));
-
-		//set done to true
-		this.queueDone = true;
+		this.prepareRoute();
+		this.queue = new Queue(this.middleware,this.call.bind(this));
 	}
 
 	protected async call(req: ServerRequest, res: Response): Promise<void>
@@ -103,10 +94,6 @@ export class Route extends R
 
 	public handle(req: ServerRequest, res: Response): Promise<any>
 	{
-		if(!this.queueDone) {
-			this.createQueue();
-		}
-
 		return this.queue.handle(req,res);
 	}
 }
