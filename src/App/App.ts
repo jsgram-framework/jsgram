@@ -227,9 +227,8 @@ export class App
 	 *
 	 * @param {ServerRequest} req
 	 * @param {Response} res
-	 * @returns {Promise<void>}
 	 */
-	public async handle(req: ServerRequest, res: Response): Promise<void>
+	public handle(req: ServerRequest, res: Response)
 	{
 		//prepare the url
 		req.urlParts = parseurl(req);
@@ -238,7 +237,7 @@ export class App
 			res.setHeader('x-powered-by','jsgram');
 		}
 
-		await this.queueHandler.handle(req,res);
+		this.queueHandler.handle(req,res).then();
 	}
 
 	/**

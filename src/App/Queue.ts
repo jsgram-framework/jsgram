@@ -40,7 +40,7 @@ export class Queue
 	 * @param {number} i
 	 * @returns {Promise<any>}
 	 */
-	public async handle(req: ServerRequest, res: Response, i: number = 0): Promise<any>
+	public handle(req: ServerRequest, res: Response, i: number = 0): Promise<any>
 	{
 		const mw: Middleware = this.queue[i];
 
@@ -48,16 +48,16 @@ export class Queue
 			return this.lastHandler(req,res);
 		}
 
-		return mw(req,res,(err?: QueueError, status?: number) => {
+		return Promise.resolve(mw(req,res,(err?: QueueError, status?: number) => {
 			if(err) {
-				return Queue.handleError(req,res,err,status);
+				return this.handleError(req,res,err,status);
 			}
 
 			return this.handle(req,res,i+1);
-		});
+		}));
 	}
 
-	public static async handleError(req: ServerRequest, res: Response, err: QueueError, status: number = 500): Promise<void>
+	public handleError(req: ServerRequest, res: Response, err: QueueError, status: number = 500): Promise<void>
 	{
 		if(res.writableEnded) {
 			return;
