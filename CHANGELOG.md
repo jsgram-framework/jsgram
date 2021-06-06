@@ -1,5 +1,9 @@
 # CHANGELOG
 
+#0.3.2
+- since 2021/06/06
+- App and Queue don't use async await anymore. Now Promise.resolve for less memory usages
+
 # 0.3.1
 - since 2021/03/28
 - updated to new gram-route version
