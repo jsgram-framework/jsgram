@@ -10,15 +10,15 @@ const body = new SimpleBody();
 /**
  * simple CORS
  */
-app.add((req: ServerRequest,res: Response,next: NextFunction) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
+app.add((req: ServerRequest, res: Response, next: NextFunction) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Credentials", "true");
+	res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept, Origin, Authorization");
 
-	if(req.method === "OPTIONS") {
+	if (req.method === "OPTIONS") {
 		//Preflighted
-		res.setHeader('Content-Length', '0');
-		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+		res.setHeader("Content-Length", "0");
+		res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		res.send("");
 	}
 
@@ -32,8 +32,8 @@ app.add((req: ServerRequest,res: Response,next: NextFunction) => {
  *
  * parse the raw body to json
  */
-app.add((req: ServerRequest,res: Response,next: NextFunction) => {
-	if(req.method !== "POST" && req.method !== "PUT") {
+app.add((req: ServerRequest, res: Response, next: NextFunction) => {
+	if (req.method !== "POST" && req.method !== "PUT") {
 		return next();
 	}
 
@@ -44,35 +44,35 @@ app.add((req: ServerRequest,res: Response,next: NextFunction) => {
 			next();
 		})
 		.catch((err) => {
-			next(err,413);
-		})
+			next(err, 413);
+		});
 });
 
-app.get("/",(req: ServerRequest, res: Response)=>{
+app.get("/", (req: ServerRequest, res: Response) => {
 	res.send("hello world");
 });
 
-app.group("/api",() => {
-	app.group("/v1",() => {
-		app.group("/posts",() => {
-			app.get("",(req: ServerRequest, res: Response) => {
+app.group("/api", () => {
+	app.group("/v1", () => {
+		app.group("/posts", () => {
+			app.get("", (req: ServerRequest, res: Response) => {
 				res.send("get all posts");
 			});
 
-			app.post("",(req: ServerRequest, res: Response) => {
+			app.post("", (req: ServerRequest, res: Response) => {
 				res.send("new post created");
 			});
 
-			app.group("/:id",() => {
-				app.get("",(req: ServerRequest, res: Response, id) => {
+			app.group("/:id", () => {
+				app.get("", (req: ServerRequest, res: Response, id) => {
 					res.send("Post: " + id);
 				});
 
-				app.delete("",(req: ServerRequest, res: Response, id) => {
+				app.delete("", (req: ServerRequest, res: Response, id) => {
 					res.send("Post: " + id + "deleted");
 				});
 
-				app.put("",(req: ServerRequest, res: Response, id) => {
+				app.put("", (req: ServerRequest, res: Response, id) => {
 					res.send("Post: " + id + "edited");
 				});
 			});
@@ -80,7 +80,7 @@ app.group("/api",() => {
 	});
 });
 
-const hostname = '127.0.0.1';
+const hostname = "127.0.0.1";
 const port = 3000;
 
 app.listen(port, hostname);
