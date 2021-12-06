@@ -1,6 +1,12 @@
 # CHANGELOG
 
-#0.3.2
+# 0.3.3
+- since 2021/12/06
+- update route version
+    - router options are changed 
+    - breaking changes!
+
+# 0.3.2
 - since 2021/06/06
 - App and Queue don't use async await anymore. Now Promise.resolve for less memory usages
 
