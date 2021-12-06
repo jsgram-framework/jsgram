@@ -1,0 +1,17 @@
+{
+    "root": true,
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "@joernheinemann/eslint-config-typescript"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+    }
+}

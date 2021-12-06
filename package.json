@@ -19,12 +19,14 @@
     "parseurl": "^1.3.3"
   },
   "devDependencies": {
+    "@joernheinemann/eslint-config-typescript": "git+https://gitlab.com/joern.heinemann/eslint-config-typescript.git",
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.6.0",
     "@types/parseurl": "^1.3.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "eslint": "^7.25.0",
     "mocha": "^8.1.3",
     "nyc": "^15.1.0",
     "ts-node": "^8.10.2",
@@ -46,6 +48,7 @@
     "prepare": "npm run build",
     "test": "mocha -r ts-node/register test/**/*Test.ts",
     "coverage": "nyc -r text-summary -r lcov npm run test",
-    "sample": "node sample/simpleREST"
+    "sample": "node sample/simpleREST",
+    "lint": "eslint . --ext .ts"
   }
 }
