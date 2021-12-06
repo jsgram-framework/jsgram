@@ -13,7 +13,7 @@ import {Response} from "..";
 import * as http from "http";
 import * as https from "https";
 import {Queue} from "./Queue";
-import {Route, default as RouteCollector} from "../Util/RouteExt";
+import RouteExt, {Route, default as RouteCollector} from "../Util/RouteExt";
 import * as parseurl from "parseurl";
 import {AppOptions, Middleware, RouteHandler} from "..";
 
@@ -38,11 +38,13 @@ export class App
 	{
 		let routerOptions: RouterOptions = {};
 
-		if (options.routerOptions !== null && options.routerOptions !== undefined) {
+		if (options?.routerOptions) {
 			routerOptions = options.routerOptions;
 		}
 
-		routerOptions.collector = require.resolve("../Util/RouteExt");
+		routerOptions.getCollector = (generator) => {
+			return new RouteExt(generator);
+		};
 
 		const collector = router(routerOptions);
 
