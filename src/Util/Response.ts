@@ -20,11 +20,11 @@ export class Response extends ServerResponse
 
 	public send(data: any)
 	{
-		if(typeof data === 'object') {
+		if (typeof data === "object") {
 			return this.json(data);
 		}
 
-		return this.sendWithHeader(data,"text/html")
+		return this.sendWithHeader(data, "text/html");
 	}
 
 	public json(data)
@@ -34,6 +34,6 @@ export class Response extends ServerResponse
 
 	public text(data)
 	{
-		return this.sendWithHeader(data,"text/plaintext");
+		return this.sendWithHeader(data, "text/plaintext");
 	}
 }

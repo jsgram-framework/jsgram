@@ -20,16 +20,16 @@ import {Middleware} from "../index";
  */
 class RouteCollector extends RC
 {
-	protected routes: Map<number,Route> = new Map();
+	protected routes: Map<number, Route> = new Map();
 
 	/**
 	 * @inheritDoc
 	 */
 	public add(methods: HttpMethod[], path: string, handler: any): Route
 	{
-		const route = super.add(methods,path,handler);
-
-		if(route instanceof Route) {
+		const route = super.add(methods, path, handler);
+		
+		if (route instanceof Route) {
 			//super.add() returns always instance of the extended Route.
 			//because we override the createRoute() function
 			return route;
@@ -76,7 +76,7 @@ export class Route extends R
 	public build()
 	{
 		this.prepareRoute();
-		this.queue = new Queue(this.middleware,this.call.bind(this));
+		this.queue = new Queue(this.middleware, this.call.bind(this));
 	}
 
 	protected async call(req: ServerRequest, res: Response): Promise<void>
@@ -85,16 +85,16 @@ export class Route extends R
 
 		const param = req.param;
 
-		const returns = await callback(req,res, ...Object.values(param));
+		const returns = await callback(req, res, ...Object.values(param));
 
-		if(returns && !res.writableEnded) {
+		if (returns && !res.writableEnded) {
 			res.send(returns);
 		}
 	}
 
 	public handle(req: ServerRequest, res: Response): Promise<any>
 	{
-		return this.queue.handle(req,res);
+		return this.queue.handle(req, res);
 	}
 }
 

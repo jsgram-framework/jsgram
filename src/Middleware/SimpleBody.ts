@@ -20,15 +20,15 @@ export class SimpleBody
 	//std = 1 mb
 	private readonly limit: number | string = 1e6;
 
-	private readonly encoding: BufferEncoding = 'utf8';
+	private readonly encoding: BufferEncoding = "utf8";
 
 	constructor(options: BodyReaderOptions = {})
 	{
-		if(options.limit) {
+		if (options.limit) {
 			this.limit = options.limit;
 		}
 
-		if(options.encoding) {
+		if (options.encoding) {
 			this.encoding = options.encoding;
 		}
 	}
@@ -51,8 +51,8 @@ export class SimpleBody
 				next();
 			})
 			.catch((err) => {
-				next(err,413);
-			})
+				next(err, 413);
+			});
 	}
 
 	/**
@@ -66,13 +66,13 @@ export class SimpleBody
 		req.setEncoding(this.encoding);
 
 		return new Promise((resolve, reject) => {
-			this.readStream(req,(err: string, body: string) => {
-				if(err) {
+			this.readStream(req, (err: string, body: string) => {
+				if (err) {
 					return reject(err);
 				}
 
 				resolve(body);
-			})
+			});
 		});
 	}
 
@@ -84,30 +84,30 @@ export class SimpleBody
 	 */
 	public readStream(stream: Readable, cb: (err: string, body: string) => void)
 	{
-		let body: string = "";
+		let body = "";
 
-		let length: number = 0;
+		let length = 0;
 
-		let limit = this.limit;
+		const limit = this.limit;
 
 		function onData(chunk) {
 			length += chunk.length;
 
-			if(length > limit) {
-				onEnd('request entity too large');
+			if (length > limit) {
+				onEnd("request entity too large");
 			}
 
 			body += chunk;
 		}
 
 		function onEnd(err: string = null) {
-			if(err) {
-				cb(err,null);
+			if (err) {
+				cb(err, null);
 				onClose();
 				return;
 			}
 
-			cb(null,body);
+			cb(null, body);
 
 			onClose();
 		}
@@ -115,13 +115,13 @@ export class SimpleBody
 		function onClose() {
 			body = null;
 
-			stream.removeListener("data",onData);
-			stream.removeListener("end",onEnd);
-			stream.removeListener("close",onClose);
+			stream.removeListener("data", onData);
+			stream.removeListener("end", onEnd);
+			stream.removeListener("close", onClose);
 		}
 
-		stream.on("data",onData);
-		stream.on("end",onEnd);
-		stream.on("close",onClose);
+		stream.on("data", onData);
+		stream.on("end", onEnd);
+		stream.on("close", onClose);
 	}
 }
