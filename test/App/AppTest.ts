@@ -466,13 +466,17 @@ describe("AppTest", () => {
 
 	//this test must always be the last test because the router isn't resetting after each test
 	it("should use other router options", function(done) {
-		const genPath = require.resolve("gram-route/dist/Generator/RegexBased/GroupPosBased");
-		const disPath = require.resolve("gram-route/dist/Dispatcher/RegexBased/GroupPosBased");
+		const gpG = require("gram-route/dist/Generator/RegexBased/GroupPosBased");
+		const gpD = require("gram-route/dist/Dispatcher/RegexBased/GroupPosBased");
 
 		const app = new App({
 			routerOptions: {
-				generator: genPath,
-				dispatcher: disPath
+				getGenerator: () => {
+					return new gpG.default();
+				},
+				getDisPatcher: (collector) => {
+					return new gpD.default(collector.getData());
+				}
 			}
 		});
 
