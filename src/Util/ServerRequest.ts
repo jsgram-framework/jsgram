@@ -14,7 +14,7 @@ export class ServerRequest extends IncomingMessage
 {
 	private attributes: Map<string, any> = new Map();
 
-	public param: {} = {};
+	public param = {};
 
 	public urlParts: Url;
 
@@ -24,7 +24,7 @@ export class ServerRequest extends IncomingMessage
 
 	public setAttribute(key: string, value: any)
 	{
-		this.attributes.set(key,value);
+		this.attributes.set(key, value);
 	}
 
 	public getAttribute(key: string)

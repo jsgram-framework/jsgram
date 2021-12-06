@@ -40,42 +40,42 @@ export class Queue
 	 * @param {number} i
 	 * @returns {Promise<any>}
 	 */
-	public handle(req: ServerRequest, res: Response, i: number = 0): Promise<any>
+	public handle(req: ServerRequest, res: Response, i = 0): Promise<any>
 	{
 		const mw: Middleware = this.queue[i];
 
-		if(!mw) {
-			return this.lastHandler(req,res);
+		if (!mw) {
+			return this.lastHandler(req, res);
 		}
 
-		return Promise.resolve(mw(req,res,(err?: QueueError, status?: number) => {
-			if(err) {
-				return this.handleError(req,res,err,status);
+		return Promise.resolve(mw(req, res, (err?: QueueError, status?: number) => {
+			if (err) {
+				return this.handleError(req, res, err, status);
 			}
 
-			return this.handle(req,res,i+1);
+			return this.handle(req, res, i + 1);
 		}));
 	}
 
-	public handleError(req: ServerRequest, res: Response, err: QueueError, status: number = 500): Promise<void>
+	public handleError(req: ServerRequest, res: Response, err: QueueError, status = 500): Promise<void>
 	{
-		if(res.writableEnded) {
+		if (res.writableEnded) {
 			return;
 		}
 
 		res.statusCode = status;
 
-		if(typeof err === 'function') {
+		if (typeof err === "function") {
 			err(req, res);
 
-			if(!res.writableEnded) {
+			if (!res.writableEnded) {
 				res.end();
 			}
 
 			return;
 		}
 
-		if(typeof err === 'string' || typeof err === 'object') {
+		if (typeof err === "string" || typeof err === "object") {
 			res.send(err);
 			return;
 		}

@@ -7,15 +7,15 @@ import {SimpleBody} from "../../src";
 import {Response as GramResponse} from "../../src/Util/Response";
 import {ServerRequest} from "../../src";
 
-let chai = require('chai');
+const chai = require("chai");
 
 chai.use(chaiHttp);
 
-describe("SimpleBodyTest",() => {
-	it('should read the request body', function (done) {
+describe("SimpleBodyTest", () => {
+	it("should read the request body", function(done) {
 		const sb = new SimpleBody();
 
-		const cb = async (req: ServerRequest ,res: GramResponse) => {
+		const cb = async (req: ServerRequest, res: GramResponse) => {
 			const body = await sb.read(req);
 
 			res.send(body);
@@ -26,31 +26,31 @@ describe("SimpleBodyTest",() => {
 		const data = "Name";
 
 		chai.request(server)
-			.post('/')
+			.post("/")
 			.send({
-				"name":data
+				"name": data
 			})
 			.end((err, res: Response) => {
-				assert.equal(err,null);
-				assert.equal(res.status,200);
-				assert.equal(res.text,'{"name":"Name"}');
+				assert.equal(err, null);
+				assert.equal(res.status, 200);
+				assert.equal(res.text, "{\"name\":\"Name\"}");
 
 				done();
 			});
 	});
 
-	it('should react to the limit', function (done) {
+	it("should react to the limit", function(done) {
 		const sb = new SimpleBody({
-			limit:1
+			limit: 1
 		});
 
-		const cb = async (req: ServerRequest ,res: GramResponse) => {
+		const cb = async (req: ServerRequest, res: GramResponse) => {
 			let body: string;
 
 			try {
 				body = await sb.read(req);
 			} catch (e) {
-				if(e instanceof Error) {
+				if (e instanceof Error) {
 					body = e.message;
 				} else if (typeof e === "string") {
 					body = e;
@@ -65,24 +65,24 @@ describe("SimpleBodyTest",() => {
 		const data = "Name";
 
 		chai.request(server)
-			.post('/')
+			.post("/")
 			.send({
-				"name":data
+				"name": data
 			})
 			.end((err, res: Response) => {
-				assert.equal(err,null);
-				assert.equal(res.status,200);
-				assert.equal(res.text,'request entity too large');
+				assert.equal(err, null);
+				assert.equal(res.status, 200);
+				assert.equal(res.text, "request entity too large");
 
 				done();
 			});
 	});
 
-	it('should read the body with the middleware', function (done) {
+	it("should read the body with the middleware", function(done) {
 		const sb = new SimpleBody();
 
-		const cb = (req: ServerRequest ,res: GramResponse) => {
-			sb.process(req,res,async () => {
+		const cb = (req: ServerRequest, res: GramResponse) => {
+			sb.process(req, res, async () => {
 				res.send(req.rawBody);
 			});
 		};
@@ -92,27 +92,27 @@ describe("SimpleBodyTest",() => {
 		const data = "Name";
 
 		chai.request(server)
-			.post('/')
+			.post("/")
 			.send({
-				"name":data
+				"name": data
 			})
 			.end((err, res: Response) => {
-				assert.equal(err,null);
-				assert.equal(res.status,200);
-				assert.equal(res.text,'{"name":"Name"}');
+				assert.equal(err, null);
+				assert.equal(res.status, 200);
+				assert.equal(res.text, "{\"name\":\"Name\"}");
 
 				done();
 			});
 	});
 
-	it('should react to limit errors with the middleware', function (done) {
+	it("should react to limit errors with the middleware", function(done) {
 		const sb = new SimpleBody({
-			limit:1,
-			encoding:'utf8'
+			limit: 1,
+			encoding: "utf8"
 		});
 
-		const cb = (req: ServerRequest ,res: GramResponse) => {
-			sb.process(req,res,async (err,status) => {
+		const cb = (req: ServerRequest, res: GramResponse) => {
+			sb.process(req, res, async (err, status) => {
 				res.statusCode = status;
 				res.send(err);
 			});
@@ -123,14 +123,14 @@ describe("SimpleBodyTest",() => {
 		const data = "Name";
 
 		chai.request(server)
-			.post('/')
+			.post("/")
 			.send({
-				"name":data
+				"name": data
 			})
 			.end((err, res: Response) => {
-				assert.equal(err,null);
-				assert.equal(res.status,413);
-				assert.equal(res.text,'request entity too large');
+				assert.equal(err, null);
+				assert.equal(res.status, 413);
+				assert.equal(res.text, "request entity too large");
 
 				done();
 			});

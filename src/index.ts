@@ -13,10 +13,11 @@ import {Response} from "./Util/Response";
 import {RouterOptions} from "gram-route";
 import {IncomingMessage, ServerResponse} from "http";
 
-export type LastHandler = (req: ServerRequest | IncomingMessage, res: Response | ServerResponse) => Promise<any> ;
+export type LastHandler = (req: ServerRequest | IncomingMessage, res: Response | ServerResponse) => Promise<any>;
 
 export type QueueError = ((req: ServerRequest | IncomingMessage, res: Response | ServerResponse) => void) |
 	string |
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	object;
 
 export type NextFunction = (err?: QueueError, status?: number) => Promise<any>;
@@ -71,7 +72,7 @@ let appObj: App;
  */
 export default function jsgram(options: AppOptions = {}): App
 {
-	if(!appObj) {
+	if (!appObj) {
 		appObj = new App(options);
 	}
 
